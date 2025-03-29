@@ -1,11 +1,11 @@
-import time
 import allure
+
+from data.constants import SUCCESS_MESSAGE
+from helpers.utils import (find_name_closer_to_avg_length, generate_first_name,
+                           generate_post_code)
 from pages.AddCustomerPage import AddCustomerPage
 from pages.CustomersPage import CustomersPage
 from pages.ManagerPage import ManagerPage
-from helpers.utils import find_name_closer_to_avg_length
-from helpers.utils import generate_post_code, generate_first_name
-from data.constants import SUCCESS_MESSAGE
 
 
 @allure.epic('Тестирование банковского веб-сайта')
@@ -21,7 +21,7 @@ class TestRun:
     3. Сгенерировать тестовые данные (First Name, Last Name, Post Code);
     4. Заполнить пустые поля данными;
     5. Нажать кнопку 'Add Customer';
-    6. Проверить, что появилось всплывающее окно с подтверждением успешного добавления;
+    6. Проверить появление всплывающего окна с подтверждением добавления;
     7. Закрыть всплывающее окно;
     ''')
     @allure.severity(allure.severity_level.CRITICAL)
@@ -39,7 +39,7 @@ class TestRun:
         with allure.step('Проверяем текст из всплывающего окна'):
             assert SUCCESS_MESSAGE in alert_text, 'Клиент не добавлен!'
         add_customer_page.accept_alert()
-            
+
     @allure.title('Проверка сортировки клиентов по имени')
     @allure.tag('UI', 'Сортировка')
     @allure.description('''
@@ -61,9 +61,12 @@ class TestRun:
         initial_list_of_names = customers_page.get_list_customer_names()
         customers_page.sort_by_first_name()
         sorted_names = customers_page.get_list_customer_names()
-        with allure.step("Проверяем, что список клиентов отсортирован по имени"):
-            assert sorted_names == sorted(initial_list_of_names), "Сортировка по имени не сработала!"
-    
+        with allure.step(
+            "Проверяем, что список клиентов отсортирован по имени"
+        ):
+            assert sorted_names == sorted(initial_list_of_names), \
+                "Сортировка по имени не сработала!"
+
     @allure.title('Удаление клиента со средней длиной имени')
     @allure.tag('UI', 'Удаление')
     @allure.description('''
@@ -82,11 +85,16 @@ class TestRun:
         manager_page = ManagerPage(browser)
         manager_page.customers_section_click()
         customers_page = CustomersPage(browser)
-        time.sleep(2)
-        list_of_names_before_deletion = customers_page.get_list_customer_names()
-        selected_name_to_delete = find_name_closer_to_avg_length(list_of_names_before_deletion)
+        list_of_names_before_deletion = (
+            customers_page.get_list_customer_names()
+        )
+        selected_name_to_delete = (
+            find_name_closer_to_avg_length(list_of_names_before_deletion)
+        )
         customers_page.delete_client_with_avg_length_name()
-        time.sleep(3)
         list_of_names_after_deletion = customers_page.get_list_customer_names()
-        with allure.step(f'Проверяем, что имя {selected_name_to_delete} удалено'):
-            assert selected_name_to_delete not in list_of_names_after_deletion, 'Клиент не был удален!'
+        with allure.step(
+            f'Проверяем, что имя {selected_name_to_delete} удалено'
+        ):
+            assert selected_name_to_delete not in \
+                list_of_names_after_deletion, 'Клиент не был удален!'

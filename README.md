@@ -18,5 +18,5 @@ pytest tests/test_add_customer.py
 
 ### Параллельный запуск тестов с отчетом Allure
 
-pytest -n 2 --alluredir=allure-results
+pytest -n 3 --alluredir=allure-results
 allure serve allure-results
