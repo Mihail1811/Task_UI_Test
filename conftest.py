@@ -4,7 +4,7 @@ from selenium import webdriver
 from data.constants import BASE_URL
 
 
-@pytest.fixture(scope='function')
+@pytest.fixture(scope="function")
 def browser():
     driver = webdriver.Chrome()
     driver.get(BASE_URL)

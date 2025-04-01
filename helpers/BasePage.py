@@ -22,7 +22,7 @@ class BasePage:
         return self.wait.until(
             expected_conditions.visibility_of_element_located(
                 (by, value)
-            ), message=f'Элемент {by, value} не найден')
+            ), message=f"Элемент {by, value} не найден")
 
     def find_elements(self, by: By, value: str) -> List[WebElement]:
         """
@@ -34,7 +34,7 @@ class BasePage:
         return self.wait.until(
             expected_conditions.visibility_of_all_elements_located(
                 (by, value)
-            ), message=f'Элементы {by, value} не найдены')
+            ), message=f"Элементы {by, value} не найдены")
 
     def click_element(self, locator: tuple) -> None:
         """

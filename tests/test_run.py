@@ -8,12 +8,12 @@ from pages.CustomersPage import CustomersPage
 from pages.ManagerPage import ManagerPage
 
 
-@allure.epic('Тестирование банковского веб-сайта')
-@allure.feature('Управление клиентами')
-@allure.story('Добавление нового клиента')
+@allure.epic("Тестирование банковского веб-сайта")
+@allure.feature("Управление клиентами")
+@allure.story("Добавление нового клиента")
 class TestRun:
-    @allure.title('Проверка добавления нового клиента')
-    @allure.tag('UI', 'Создание клиента')
+    @allure.title("Проверка добавления нового клиента")
+    @allure.tag("UI", "Создание клиента")
     @allure.description('''
     Шаги:
     1. Перейти на страницу 'Manager';
@@ -25,23 +25,23 @@ class TestRun:
     7. Закрыть всплывающее окно;
     ''')
     @allure.severity(allure.severity_level.CRITICAL)
-    @allure.testcase('Проверка успешного добавления клиента')
-    @allure.issue('Некорректное поведение при добавлении')
+    @allure.testcase("Проверка успешного добавления клиента")
+    @allure.issue("Некорректное поведение при добавлении")
     def test_add_customer(self, browser) -> None:
         manager_page = ManagerPage(browser)
         manager_page.add_customer_section_click()
         add_customer_page = AddCustomerPage(browser)
         post_code = generate_post_code()
         first_name = generate_first_name(post_code)
-        last_name = 'Holmes'
+        last_name = "Holmes"
         add_customer_page.add_customer(first_name, last_name, post_code)
         alert_text = add_customer_page.get_alert_text()
-        with allure.step('Проверяем текст из всплывающего окна'):
-            assert SUCCESS_MESSAGE in alert_text, 'Клиент не добавлен!'
+        with allure.step("Проверяем текст из всплывающего окна"):
+            assert SUCCESS_MESSAGE in alert_text, "Клиент не добавлен!"
         add_customer_page.accept_alert()
 
-    @allure.title('Проверка сортировки клиентов по имени')
-    @allure.tag('UI', 'Сортировка')
+    @allure.title("Проверка сортировки клиентов по имени")
+    @allure.tag("UI", "Сортировка")
     @allure.description('''
     Шаги:
     1. Перейти на страницу 'Manager';
@@ -52,8 +52,8 @@ class TestRun:
     6. Проверить, что новый список отсортирован по имени.
     ''')
     @allure.severity(allure.severity_level.NORMAL)
-    @allure.testcase('Проверка успешной сортировки по имени')
-    @allure.issue('Некорректное поведение при сортировке')
+    @allure.testcase("Проверка успешной сортировки по имени")
+    @allure.issue("Некорректное поведение при сортировке")
     def test_sort_customers_by_first_name(self, browser):
         manager_page = ManagerPage(browser)
         manager_page.customers_section_click()
@@ -67,8 +67,8 @@ class TestRun:
             assert sorted_names == sorted(initial_list_of_names), \
                 "Сортировка по имени не сработала!"
 
-    @allure.title('Удаление клиента со средней длиной имени')
-    @allure.tag('UI', 'Удаление')
+    @allure.title("Удаление клиента со средней длиной имени")
+    @allure.tag("UI", "Удаление")
     @allure.description('''
     Шаги:
     1. Перейти на страницу 'Manager';
@@ -79,8 +79,8 @@ class TestRun:
     6. Проверить, что клиент больше не отображается в списке.
     ''')
     @allure.severity(allure.severity_level.CRITICAL)
-    @allure.testcase('Проверка успешного удаления клиента')
-    @allure.issue('Некорректное поведение при удалении')
+    @allure.testcase("Проверка успешного удаления клиента")
+    @allure.issue("Некорректное поведение при удалении")
     def test_delete_customer(self, browser):
         manager_page = ManagerPage(browser)
         manager_page.customers_section_click()
@@ -94,7 +94,7 @@ class TestRun:
         customers_page.delete_client_with_avg_length_name()
         list_of_names_after_deletion = customers_page.get_list_customer_names()
         with allure.step(
-            f'Проверяем, что имя {selected_name_to_delete} удалено'
+            f"Проверяем, что имя {selected_name_to_delete} удалено"
         ):
             assert selected_name_to_delete not in \
-                list_of_names_after_deletion, 'Клиент не был удален!'
+                list_of_names_after_deletion, "Клиент не был удален!"

@@ -5,12 +5,12 @@ import allure
 
 @allure.step("Генерируем Post Code")
 def generate_post_code() -> str:
-    return ''.join(str(random.randint(1, 9)) for _ in range(10))
+    return "".join(str(random.randint(1, 9)) for _ in range(10))
 
 
 @allure.step("Генерируем First Name на основе Post Code")
 def generate_first_name(post_code):
-    name = ''
+    name = ""
     for i in range(0, len(post_code), 2):
         num = int(post_code[i:i+2])
         letter = chr(97 + (num % 26))
